@@ -1,12 +1,15 @@
 # from pydantic import EmailStr
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 from sqlalchemy import func
 from sqlmodel import Field, Relationship, SQLModel
 from sqlmodel.main import EmailStr
 
 from src.task.models import TaskStatus
-from src.auth.schema import User
+
+if TYPE_CHECKING:
+    from src.auth.schemas import User
 
 
 class Task(SQLModel, table=True):
@@ -15,8 +18,8 @@ class Task(SQLModel, table=True):
     description: str
     status: TaskStatus 
     created_at: datetime = Field(
-        # default_factory=lambda: datetime.now(tz=timezone.utc),
-        sa_column_kwargs={"server_default": func.timezone("utc", func.now())},
+        default_factory=lambda: datetime.now(tz=timezone.utc),
+        sa_column_kwargs={"server_default": func.datetime("now")}
     )
 
     # Define the Foreign Key

@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 # from datetime import datetime, timezone
 # from sqlalchemy import func
 from enum import Enum
+
 
 class TaskStatus(str, Enum):
     TODO = "todo"
@@ -20,4 +21,7 @@ class TaskUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
     status: TaskStatus | None = None
-    
+
+class TaskResponse(TaskCreate):
+    id: int
+    user_id: EmailStr
