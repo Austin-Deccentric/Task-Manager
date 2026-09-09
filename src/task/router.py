@@ -78,12 +78,19 @@ async def update_task(
     session.commit()
     session.refresh(db_task)
     if not was_done and db_task.status == TaskStatus.DONE:
+        assert db_task.id is not None
+        # Snapshot plain values before the session closes — do not pass the ORM object
+        task_id_snapshot = db_task.id
+        title_snapshot = db_task.title
+        user_id_snapshot = db_task.user_id
+        completed_at_snapshot = datetime.now(timezone.utc)
+        
         background_tasks.add_task(
             log_completion_report,
-            db_task.id, 
-            db_task.title, 
-            db_task.user_id, 
-            datetime.now(timezone.utc)
+            task_id=task_id_snapshot,
+            title=title_snapshot,
+            user_id=user_id_snapshot,
+            completed_at=completed_at_snapshot,
         )
     
     return db_task
@@ -134,13 +141,18 @@ async def update_task_status(
 
     if db_task.status == TaskStatus.DONE and not was_done:
         assert db_task.id is not None
+        # Snapshot plain values before the session closes — do not pass the ORM object
+        task_id_snapshot = db_task.id
+        title_snapshot = db_task.title
+        user_id_snapshot = db_task.user_id
+        completed_at_snapshot = datetime.now(timezone.utc)
         
         background_tasks.add_task(
             log_completion_report,
-            task_id=db_task.id,
-            title=db_task.title,
-            user_id=db_task.user_id,
-            completed_at=datetime.now(timezone.utc),
+            task_id=task_id_snapshot,
+            title=title_snapshot,
+            user_id=user_id_snapshot,
+            completed_at=completed_at_snapshot,
         )
 
     return db_task
