@@ -2,6 +2,9 @@
 
 FastAPI + SQLModel task management API with user auth, SQLite persistence, API-key-guarded task routes, pagination, and background completion reports.
 
+## Badges
+[![wakatime](https://wakatime.com/badge/user/993432c2-fd84-42b2-a48b-d4af2d57f9da/project/f7dd62e1-d44c-4359-b1d5-29ac52c39e9f.svg)](https://wakatime.com/badge/user/993432c2-fd84-42b2-a48b-d4af2d57f9da/project/f7dd62e1-d44c-4359-b1d5-29ac52c39e9f)
+
 ## Features
 
 | Area | Endpoint | Description |
