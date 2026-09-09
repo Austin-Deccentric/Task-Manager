@@ -108,6 +108,7 @@ async def delete_task(
         "message": "Task deleted successfully"
     }
 
+
 @router.patch("/{task_id}/status", response_model=TaskResponse, summary="Update a task status by ID")
 async def update_task_status(
     task_id: Annotated[int, Path(gt=0, description="The ID of the task to update")],
@@ -132,6 +133,8 @@ async def update_task_status(
     session.refresh(db_task)
 
     if db_task.status == TaskStatus.DONE and not was_done:
+        assert db_task.id is not None
+        
         background_tasks.add_task(
             log_completion_report,
             task_id=db_task.id,

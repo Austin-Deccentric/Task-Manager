@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPORT_FILE = Path(__file__).parent.parent / "completion_reports.log"
+REPORT_FILE = Path(__file__).parent.parent.parent / "completion_reports.log"
 
 
 def log_completion_report(
